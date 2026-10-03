@@ -1,0 +1,15 @@
+set -ex
+ mkdir -p build/obj
+ mkdir -p build/util
+ mkdir -p build/gen
+
+ cc src/stage0.c -g -o build/util/stage0
+
+ build/util/stage0 src/base_types.h src/example.h -n example -o build/gen/example.c
+ cc -c src/examplelib.c -o build/obj/examplelib.o -I./thirdparty/lua/src/ -L./thirdparty/lua/src/ -llua
+ cc src/example_main.c build/obj/examplelib.o -o build/example -I./thirdparty/lua/src/ -L./thirdparty/lua/src/ -llua
+./build/example src/example.lua
+
+### cc -c src/mylib.c -o build/obj/mylib.o -I./thirdparty/lua/src/ -L./thirdparty/lua/src/ -llua
+### cc src/main.c build/obj/mylib.o -o build/main -I./thirdparty/lua/src/ -L./thirdparty/lua/src/ -llua
+### ./build/main src/main.lua
